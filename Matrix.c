@@ -74,7 +74,51 @@ void free_matrix(Matrix* matrix) {
     free(matrix->values);
 }
 
-// OPERATIONS
+// ELEMENTARY ROW OPERATIONS
+
+void row_scalar(int row, double scalar, Matrix* m1) {
+    for (int c = 0; c<m1->columns; c++) {
+        m1->values[row][c] *= scalar;
+    }
+}
+
+void column_scalar(int column, double scalar, Matrix* m1) {
+    for (int r = 0; r<m1->rows; r++) {
+        m1->values[r][column] *= scalar;
+    }
+}
+
+void swap_rows(int r1, int r2, Matrix* m1) {
+    double* temp = m1->values[r1];
+    m1->values[r1] = m1->values[r2];
+    m1->values[r2] = temp;
+}
+
+static void swap_numbers(double* a, double* b) {
+    double temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void swap_columns(int c1, int c2, Matrix* m1) {
+    // no easy way to do it with pointers (which is a consequence of storing the values as an array of arrays)
+    for (int r = 0; r<m1->rows; r++) {
+        swap_numbers(&m1->values[r][c1], &m1->values[r][c2]);
+    }
+}
+
+void add_rows(int source, int dest, double scalar, Matrix* m1) {
+    for (int c = 0; c<m1->columns; c++) {
+        m1->values[dest][c] += (m1->values[source][c]*scalar);
+    }
+}
+
+void add_columns(int source, int dest, double scalar, Matrix* m1) {
+    for (int r = 0; r<m1->rows; r++) {
+        m1->values[r][dest] += (m1->values[r][source]*scalar);
+    }
+}
+// OPERATIONS ON MATRICES
 
 Matrix multiply_matrices(Matrix A, Matrix B) {
     assert(A.columns == B.rows && "matrix A columns must be equal matrix B rows for multiplication");
@@ -121,4 +165,8 @@ Matrix transpose(Matrix m1) {
         }
     }
     return transposed;
+}
+
+Matrix gauss_elim(Matrix m1) {
+    
 }
