@@ -112,3 +112,13 @@ Matrix add_matrices(Matrix m1, Matrix m2) {
     }
     return m2;
 }
+
+Matrix transpose(Matrix m1) {
+    Matrix transposed = init_matrix(m1.columns, m1.rows, NULL);
+    for (int r = 0; r<m1.rows; r++) {
+        for (int c = 0; c<m1.columns; c++) {
+            transposed.values[c][r] = m1.values[r][c];
+        }
+    }
+    return transposed;
+}
