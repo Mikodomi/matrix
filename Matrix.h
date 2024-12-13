@@ -14,5 +14,6 @@ void free_matrix(Matrix* matrix);
 // OPERATIONS
 Matrix multiply_matrices(Matrix m1, Matrix m2);
 Matrix multiply_scalar(Matrix m1, double scalar);
+Matrix add_matrices(Matrix m1, Matrix m2);
 
 #endif

@@ -102,3 +102,13 @@ Matrix multiply_scalar(Matrix m1, double scalar) {
     }
     return m1;
 }
+
+Matrix add_matrices(Matrix m1, Matrix m2) {
+    assert((m1.rows == m2.rows && m1.columns == m2.columns) && "Matrices must be of equal dimensions to be added");
+    for (int r = 0; r<m1.rows; r++) {
+        for (int c = 0; c<m1.columns; c++) {
+            m2.values[r][c] += m1.values[r][c];
+        }
+    }
+    return m2;
+}
