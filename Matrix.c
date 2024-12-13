@@ -12,14 +12,14 @@
 // MATRIX STRUCT FUNCTIONS
 
 // preinitialized to an empty matrix
-Matrix init_matrix(int m, int n, const int numbers[m][n]) { // n - rows, m - columns
+Matrix init_matrix(int m, int n, const double numbers[m][n]) { // n - rows, m - columns
     Matrix mat;
     mat.columns = n;
     mat.rows = m;
-    mat.values = (int**)malloc(m*sizeof(int*));
+    mat.values = (double**)malloc(m*sizeof(double*));
     if (mat.values == NULL) abort();
     for (int i = 0; i<m; i++) {
-        mat.values[i] = (int*)malloc(n*sizeof(int));
+        mat.values[i] = (double*)malloc(n*sizeof(double));
         if (mat.values[i] == NULL) {
             for (int fix = 0; fix < i-1; fix++) {
                 free(mat.values[fix]);
@@ -28,7 +28,7 @@ Matrix init_matrix(int m, int n, const int numbers[m][n]) { // n - rows, m - col
         }
         if (!numbers) {
             for (int j = 0; j<n; j++) {
-                mat.values[i][j] = 0;
+                mat.values[i][j] = 0.0;
             }
         } else {
             for (int j = 0; j<n; j++) {
@@ -43,26 +43,26 @@ void print_matrix(Matrix matrix) {
     if (matrix.rows == 1) {
         printf("[");
         for (int j = 0; j<matrix.columns; j++) {
-            printf("%6d", matrix.values[0][j]);
+            printf("%8.2lf", matrix.values[0][j]);
         }
         printf("]\n");
         return;
     }
     printf(TOPLEFT);
     for (int j = 0; j<matrix.columns; j++) {
-        printf("%6d", matrix.values[0][j]);
+        printf("%8.2lf", matrix.values[0][j]);
     }
     printf(TOPRIGHT"\n");
     for (int i = 1; i<matrix.rows-1; i++) {
             printf(SIDE);
             for (int j = 0; j<matrix.columns; j++) {
-                printf("%6d", matrix.values[i][j]);
+                printf("%8.2lf", matrix.values[i][j]);
             }
             printf(SIDE"\n");
     }
     printf(BOTTOMLEFT);
     for (int j = 0; j<matrix.columns; j++) {
-        printf("%6d", matrix.values[matrix.rows-1][j]);
+        printf("%8.2lf", matrix.values[matrix.rows-1][j]);
     }
     printf(BOTTOMRIGHT"\n");
 }
@@ -83,7 +83,7 @@ Matrix multiply_matrices(Matrix A, Matrix B) {
     for (int rA = 0; rA<A.rows; rA++) {
         for (int cB = 0; cB<B.columns; cB++) {
             for (int rB = 0; rB<B.rows; rB++) {
-                int sum = 0;
+                double sum = 0;
                 for (int cA = 0; cA<A.columns; cA++) {
                     sum += A.values[rA][cA]*B.values[cA][cB];
                 }
@@ -92,4 +92,13 @@ Matrix multiply_matrices(Matrix A, Matrix B) {
         }
     }
     return result;
+}
+
+Matrix multiply_scalar(Matrix m1, double scalar) {
+    for (int r = 0; r<m1.rows; r++) {
+        for (int c = 0; c<m1.columns; c++) {
+            m1.values[r][c] *= scalar;
+        }
+    }
+    return m1;
 }
